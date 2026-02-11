@@ -25,7 +25,7 @@ certifi_datas = collect_data_files('certifi')
 matplotlib_datas = collect_data_files('matplotlib')
 simpleitk_datas = collect_data_files('SimpleITK')
 
-# Combine all data files
+# Combine all data files including standalone utilities
 all_datas = (
     totalseg_datas + 
     nnunet_datas + 
@@ -33,13 +33,9 @@ all_datas = (
     pydicom_datas + 
     certifi_datas + 
     matplotlib_datas + 
-    simpleitk_datas
+    simpleitk_datas +
+    [(os.path.join(spec_root, 'Mask_QC.py'), '.')]  # Standalone QC utility
 )
-
-# Add Mask_QC.py as a data file (standalone utility, not imported by main app)
-all_datas += [
-    (os.path.join(spec_root, 'Mask_QC.py'), '.'),
-]
 
 # Hidden imports required for dynamic loading
 hiddenimports = [
