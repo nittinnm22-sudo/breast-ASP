@@ -156,7 +156,7 @@ a = Analysis(
         'pytest',
         'sphinx',
         'tkinter.test',
-        'torchvision',  # Not needed, adds ~500MB
+        'torchvision',  # Not needed for BreastASP, adds ~500MB
     ],
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
