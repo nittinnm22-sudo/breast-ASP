@@ -175,7 +175,7 @@ exe = EXE(
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
-    upx=False,  # Disable UPX to prevent PyTorch DLL corruption on Windows
+    upx=False,  # Disable UPX to prevent DLL corruption (especially PyTorch on Windows)
     console=False,  # Windowed mode (set to True for debugging)
     disable_windowed_traceback=False,
     argv_emulation=False,
@@ -191,7 +191,7 @@ coll = COLLECT(
     a.zipfiles,
     a.datas,
     strip=False,
-    upx=False,  # Disable UPX to prevent PyTorch DLL corruption on Windows
+    upx=False,  # Disable UPX to prevent DLL corruption (especially PyTorch on Windows)
     upx_exclude=[],
     name='BreastASP',
 )

@@ -245,11 +245,14 @@ To include models in build:
 
 ### Large Executable Size
 
-The application is large (3-8 GB) due to:
+The application is large (3-8 GB) due to additional packages and data files now included:
 - PyTorch deep learning framework (~1-2 GB)
-- Medical imaging libraries (~500 MB)
+- Medical imaging libraries (nibabel, SimpleITK, pydicom) (~500 MB)
+- Additional data files (matplotlib, certifi, charset files) (~200 MB)
 - CUDA support if included (~1-2 GB)
 - Pre-trained segmentation models (if bundled, ~1.5 GB)
+
+**Note**: The size increased from the previous 1-2 GB estimate due to more comprehensive package bundling to fix the "TotalSegmentator not installed" error.
 
 **Expected Build Sizes**:
 - CPU-only build: ~3-4 GB
@@ -258,7 +261,7 @@ The application is large (3-8 GB) due to:
 **Important**: The entire `dist\BreastASP\` folder must be distributed together, not just the .exe file. All DLLs and data files in this folder are required for the application to function.
 
 To reduce size:
-- Use CPU-only PyTorch build (see below)
+- Use CPU-only PyTorch build (see "Build Variants" section below)
 - Don't bundle models (let them download on first run)
 
 ### Performance Issues
