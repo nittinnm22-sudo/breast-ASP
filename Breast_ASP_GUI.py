@@ -108,10 +108,10 @@ class DicomConverter:
                     # array is in Bq/mL, weight in kg
                     suv_array = (array * weight * 1000.0) / corrected_dose
                     array = suv_array.astype(np.float32)
-                    
-                except Exception as e:
-                    print(f"Warning: Could not compute SUVbw: {str(e)}")
-                    print("Using raw values")
+                
+            except Exception as e:
+                print(f"Warning: Could not compute SUVbw: {str(e)}")
+                print("Using raw values")
         
         # Transpose to RAS orientation (nibabel convention)
         array = np.transpose(array, (2, 1, 0))
