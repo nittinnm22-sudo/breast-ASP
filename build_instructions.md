@@ -252,7 +252,7 @@ The application is large (3-8 GB) due to additional packages and data files now 
 - CUDA support if included (~1-2 GB)
 - Pre-trained segmentation models (if bundled, ~1.5 GB)
 
-**Note**: The size increased from the previous 1-2 GB estimate due to more comprehensive package bundling to fix the "TotalSegmentator not installed" error.
+**Note**: The size increased from the previous 1-2 GB estimate due to more comprehensive package bundling to fix the "TotalSegmentator not installed" error. **This increase is necessary to ensure all dependencies are properly included for the application to function correctly.**
 
 **Expected Build Sizes**:
 - CPU-only build: ~3-4 GB
