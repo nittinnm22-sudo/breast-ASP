@@ -239,13 +239,13 @@ class ShapeRadiomics:
             else:
                 elongation = 0.0
                 flatness = 0.0
-        except:
+        except (ValueError, IndexError, np.linalg.LinAlgError) as e:
             elongation = 0.0
             flatness = 0.0
         
         # Solidity: ratio of volume to convex hull volume
         try:
-            from scipy.spatial import ConvexHull
+            from scipy.spatial import ConvexHull, QhullError
             coords = np.argwhere(tumor_mask > 0) * spacing
             if len(coords) >= 4:
                 hull = ConvexHull(coords)
@@ -253,7 +253,7 @@ class ShapeRadiomics:
                 solidity = float(volume_mm3 / convex_volume) if convex_volume > 0 else 0.0
             else:
                 solidity = 1.0
-        except:
+        except (ImportError, ValueError, QhullError) as e:
             solidity = 1.0
             
         features = {

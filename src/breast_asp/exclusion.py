@@ -153,7 +153,10 @@ class AxillaryExcluder:
             # - More uniform uptake
             is_moderate_suv = region_suv_max < node_suv_max
             is_small = volume_mm3 < 3000
-            is_uniform = (region_suv_max / region_suv_mean) < 2.0
+            # Check for division by zero before calculating uniformity
+            is_uniform = False
+            if region_suv_mean > 0:
+                is_uniform = (region_suv_max / region_suv_mean) < 2.0
             
             if is_moderate_suv and is_small and is_uniform:
                 filtered_mask[labeled_mask == region.label] = 0
