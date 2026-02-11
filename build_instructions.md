@@ -125,7 +125,7 @@ BreastASP.exe
 
 The GUI should launch without errors. 
 
-**First Run Note**: On the first run, the application will automatically download TotalSegmentator model weights (~1.5 GB) if they haven't been downloaded yet. This is normal and only happens once. You'll see progress in the console if you built with `console=True`, or the application may appear to freeze briefly during download. The models are stored in `%USERPROFILE%\.totalsegmentator\` and will be reused on subsequent runs.
+**First Run Note**: On the first run, the application will automatically download TotalSegmentator model weights (~1.5 GB) if they haven't been downloaded yet. This is normal and only happens once. **The download may take several minutes (5-15 minutes) depending on your internet connection speed.** You'll see progress in the console if you built with `console=True`, or the application may appear unresponsive during download if built with `console=False`. The models are stored in `%USERPROFILE%\.totalsegmentator\` and will be reused on subsequent runs.
 
 **Verification Steps**:
 1. GUI window opens successfully

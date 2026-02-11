@@ -36,10 +36,8 @@ all_datas = (
     simpleitk_datas
 )
 
-# Add application Python files as data files
+# Add Mask_QC.py as a data file (standalone utility, not imported by main app)
 all_datas += [
-    (os.path.join(spec_root, 'Breast_ASP.py'), '.'),
-    (os.path.join(spec_root, 'advanced_metrics.py'), '.'),
     (os.path.join(spec_root, 'Mask_QC.py'), '.'),
 ]
 
@@ -124,12 +122,6 @@ hiddenimports = [
     'charset_normalizer',
     'urllib3',
     'idna',
-    # standard library modules that may need explicit inclusion
-    'json',
-    'csv',
-    'threading',
-    'datetime',
-    'pathlib',
     # tkinter modules
     'tkinter',
     'tkinter.filedialog',
