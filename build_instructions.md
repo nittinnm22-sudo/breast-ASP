@@ -110,16 +110,39 @@ Contents:
 - Multiple DLL files and dependencies
 - Python libraries and data files
 
-**Total size**: Approximately 1-2 GB (due to PyTorch and medical imaging libraries)
+**Total size**: Approximately 3-8 GB depending on whether CUDA support is included
+
+**Important**: You must distribute the entire `dist\BreastASP\` folder, not just the .exe file. All files in this directory are required for the application to run.
 
 ## Step 10: Test the Executable
+
+Run the built executable to verify it works:
 
 ```cmd
 cd dist\BreastASP
 BreastASP.exe
 ```
 
-The GUI should launch. Test with sample data if available.
+The GUI should launch without errors. 
+
+**First Run Note**: On the first run, the application will automatically download TotalSegmentator model weights if they haven't been downloaded yet. This is normal and only happens once.
+
+Important details about the first run:
+- **Download size**: ~1.5 GB
+- **Expected time**: 5-15 minutes depending on internet connection speed
+- **Progress visibility**: 
+  - With `console=True`: Progress messages displayed in console window
+  - With `console=False`: Application may appear unresponsive during download
+- **Storage location**: `%USERPROFILE%\.totalsegmentator\`
+- **Persistence**: Models are reused on all subsequent runs
+
+**Verification Steps**:
+1. GUI window opens successfully
+2. All tabs and buttons are visible
+3. File selection dialogs work
+4. No error messages appear on startup
+
+Test with sample data if available to ensure full functionality.
 
 ## Distribution
 
@@ -147,6 +170,29 @@ To distribute the application:
 ```cmd
 pip install -r requirements.txt --force-reinstall
 ```
+
+### TotalSegmentator Not Installed Error
+
+**Symptoms**: When running the built executable, you get "TotalSegmentator not installed" error
+
+**Solution**: 
+1. Verify TotalSegmentator is installed in the build environment:
+   ```cmd
+   pip show totalsegmentator
+   ```
+   
+2. If not installed, install it and rebuild:
+   ```cmd
+   pip install totalsegmentator>=2.0
+   pyinstaller build_exe.spec
+   ```
+
+3. On first run, the application will automatically download TotalSegmentator model weights (~1.5 GB). This is expected and only happens once. Ensure you have:
+   - Internet connection
+   - Sufficient disk space (~2 GB free)
+   - Write permissions to user home directory
+
+**Note**: Models are stored in `%USERPROFILE%\.totalsegmentator\` and will persist across runs.
 
 ### Executable Crashes on Startup
 
@@ -199,15 +245,24 @@ To include models in build:
 
 ### Large Executable Size
 
-The application is large (~1-2 GB) due to:
-- PyTorch deep learning framework
-- Medical imaging libraries
-- Pre-trained segmentation models
+The application is large (3-8 GB) due to additional packages and data files now included:
+- PyTorch deep learning framework (~1-2 GB)
+- Medical imaging libraries (nibabel, SimpleITK, pydicom) (~500 MB)
+- Additional data files (matplotlib, certifi, charset files) (~200 MB)
+- CUDA support if included (~1-2 GB)
+- Pre-trained segmentation models (if bundled, ~1.5 GB)
+
+**Note**: The size increased from the previous 1-2 GB estimate due to more comprehensive package bundling to fix the "TotalSegmentator not installed" error. **This increase is necessary to ensure all dependencies are properly included for the application to function correctly.**
+
+**Expected Build Sizes**:
+- CPU-only build: ~3-4 GB
+- CUDA-enabled build: ~6-8 GB
+
+**Important**: The entire `dist\BreastASP\` folder must be distributed together, not just the .exe file. All DLLs and data files in this folder are required for the application to function.
 
 To reduce size:
-- Use `upx=True` in spec (already enabled)
-- Exclude unused PyTorch backends
-- Consider CPU-only PyTorch build
+- Use CPU-only PyTorch build (see "Build Variants" section below)
+- Don't bundle models (let them download on first run)
 
 ### Performance Issues
 
