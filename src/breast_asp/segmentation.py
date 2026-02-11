@@ -46,10 +46,14 @@ class BreastTumorSegmenter:
         binary_mask = pet_image >= self.suv_threshold
         
         # Remove small objects and holes
-        binary_mask = morphology.remove_small_objects(binary_mask, 
-                                                      min_size=10)
-        binary_mask = morphology.remove_small_holes(binary_mask, 
-                                                    area_threshold=10)
+        try:
+            # Try newer API first (scikit-image >= 0.26.0)
+            binary_mask = morphology.remove_small_objects(binary_mask, max_size=9)
+            binary_mask = morphology.remove_small_holes(binary_mask, max_size=9)
+        except TypeError:
+            # Fall back to older API
+            binary_mask = morphology.remove_small_objects(binary_mask, min_size=10)
+            binary_mask = morphology.remove_small_holes(binary_mask, area_threshold=10)
         
         # Label connected components
         labeled_mask = measure.label(binary_mask, connectivity=3)

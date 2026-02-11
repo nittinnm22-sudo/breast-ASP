@@ -40,7 +40,6 @@ pip install -r requirements.txt
 - scipy >= 1.7.0
 - scikit-image >= 0.18.0
 - SimpleITK >= 2.1.0
-- pyradiomics >= 3.0.1
 - pandas >= 1.3.0
 
 ## Quick Start
