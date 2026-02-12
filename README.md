@@ -19,6 +19,24 @@ cd breast-ASP
 
 **✅ Verify Both Packages Are Included**: Yes! This repository includes BOTH `breast_asp` and `lung_asp`. See [`YES_IT_INCLUDES_LUNG_ASP.md`](YES_IT_INCLUDES_LUNG_ASP.md) for confirmation.
 
+## 🎯 Lung-ASP Executable Status
+
+**Is the lung-ASP EXE ready to download?**
+
+- ✅ **Build System Ready**: Complete build scripts and documentation
+- ❌ **Pre-built EXE**: Not available yet - you need to build it yourself
+- ⏱️ **Build Time**: 10-15 minutes
+- 📖 **Full Status**: See [`EXE_STATUS.md`](EXE_STATUS.md) for complete details
+
+**Quick Build**:
+```bash
+./build_full.sh  # Linux/macOS
+# or
+build_full.bat   # Windows
+```
+
+See [`BUILD_LOCAL.md`](BUILD_LOCAL.md) for detailed build instructions.
+
 ## Features
 
 ### Core Functionality
