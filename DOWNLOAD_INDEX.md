@@ -48,6 +48,20 @@ Looking to download the breast-ASP repository? **Pick the guide that matches you
 
 ---
 
+### 4. 🪟 **WINDOWS_VERIFICATION.md** - Windows Users
+**Best for**: Windows users who want to verify after cloning
+
+**Contains**:
+- Windows-specific commands (Command Prompt & PowerShell)
+- Step-by-step verification
+- Common Windows errors and fixes
+- Quick verification script
+- ~6 minute read
+
+**Read this if**: "I'm on Windows and need help verifying the download"
+
+---
+
 ## 🚀 Super Quick Start
 
 ### Don't want to read anything?
@@ -205,6 +219,7 @@ If you want to **share** with others:
 - 🚀 **Fast**: `DOWNLOAD_QUICK.md`
 - 📖 **Complete**: `HOW_TO_DOWNLOAD.md`  
 - 🎨 **Visual**: `DOWNLOAD_VISUAL.md`
+- 🪟 **Windows**: `WINDOWS_VERIFICATION.md` (for verification after cloning)
 
 Or just go to: https://github.com/nittinnm22-sudo/breast-ASP
 
@@ -214,16 +229,17 @@ Or just go to: https://github.com/nittinnm22-sudo/breast-ASP
 
 ## 📊 Guide Comparison
 
-| Feature | Quick | Complete | Visual |
-|---------|-------|----------|--------|
-| Read Time | 30 sec | 5 min | 4 min |
-| Detail Level | Low | High | Medium |
-| Methods Shown | 2 | 4 | 4 |
-| Troubleshooting | ❌ | ✅ | ✅ |
-| Diagrams | ❌ | ❌ | ✅ |
-| Step-by-Step | ❌ | ✅ | ✅ |
-| Commands Only | ✅ | ❌ | ❌ |
-| Beginner Friendly | ❌ | ✅ | ✅ |
-| Quick Reference | ✅ | ❌ | ✅ |
+| Feature | Quick | Complete | Visual | Windows |
+|---------|-------|----------|--------|---------|
+| Read Time | 30 sec | 5 min | 4 min | 6 min |
+| Detail Level | Low | High | Medium | Medium |
+| Methods Shown | 2 | 4 | 4 | N/A |
+| Troubleshooting | ❌ | ✅ | ✅ | ✅ |
+| Diagrams | ❌ | ❌ | ✅ | ❌ |
+| Step-by-Step | ❌ | ✅ | ✅ | ✅ |
+| Commands Only | ✅ | ❌ | ❌ | ❌ |
+| Beginner Friendly | ❌ | ✅ | ✅ | ✅ |
+| Quick Reference | ✅ | ❌ | ✅ | ❌ |
+| Platform-Specific | ❌ | ❌ | ❌ | ✅ Windows |
 
 **Choose based on your needs!**

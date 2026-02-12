@@ -15,6 +15,10 @@ git clone https://github.com/nittinnm22-sudo/breast-ASP.git
 cd breast-ASP
 ```
 
+**🪟 Windows Users**: After cloning, see [`WINDOWS_VERIFICATION.md`](WINDOWS_VERIFICATION.md) for step-by-step verification commands and troubleshooting.
+
+**✅ Verify Both Packages Are Included**: Yes! This repository includes BOTH `breast_asp` and `lung_asp`. See [`YES_IT_INCLUDES_LUNG_ASP.md`](YES_IT_INCLUDES_LUNG_ASP.md) for confirmation.
+
 ## Features
 
 ### Core Functionality
