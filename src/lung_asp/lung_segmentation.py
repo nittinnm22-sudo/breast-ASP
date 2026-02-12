@@ -60,11 +60,11 @@ class LungTumorSegmenter:
             try:
                 # Use ball structuring element for 3D closing
                 struct_elem = morphology.ball(closing_radius)
-                body_mask = morphology.binary_closing(body_mask, struct_elem)
+                body_mask = morphology.closing(body_mask, struct_elem)
             except (ValueError, MemoryError):
                 # Fallback to smaller radius if memory issue
                 struct_elem = morphology.ball(min(closing_radius // 2, 10))
-                body_mask = morphology.binary_closing(body_mask, struct_elem)
+                body_mask = morphology.closing(body_mask, struct_elem)
         
         # Fill holes
         body_mask = ndimage.binary_fill_holes(body_mask)
@@ -141,8 +141,8 @@ class LungTumorSegmenter:
             background_mask = background_mask & thoracic_mask
         
         # Erode background to avoid tumor boundary
-        background_mask = morphology.binary_erosion(background_mask, 
-                                                    morphology.ball(3))
+        background_mask = morphology.erosion(background_mask, 
+                                            morphology.ball(3))
         markers[background_mask] = 2  # Background
         
         # Prepare image for random walker (normalize)
@@ -224,13 +224,20 @@ class LungTumorSegmenter:
         # Morphological closing (radius 2 voxels)
         try:
             struct_elem = morphology.ball(2)
-            mask = morphology.binary_closing(mask, struct_elem)
+            mask = morphology.closing(mask, struct_elem)
         except (ValueError, MemoryError):
-            mask = morphology.binary_closing(mask, morphology.ball(1))
+            mask = morphology.closing(mask, morphology.ball(1))
         
-        # Fill holes (cavities >= 500 voxels)
-        labeled_holes = measure.label(~mask, connectivity=3)
+        # Fill holes (cavities >= 500 voxels) INSIDE the mask
+        # Only fill holes that are surrounded by the tumor
+        mask_filled = ndimage.binary_fill_holes(mask)
+        
+        # Find holes (regions inside tumor that were filled)
+        holes = mask_filled & (~mask)
+        labeled_holes = measure.label(holes, connectivity=3)
         regions = measure.regionprops(labeled_holes)
+        
+        # Only keep large holes filled
         for region in regions:
             if region.area >= 500:
                 mask[labeled_holes == region.label] = 1

@@ -139,11 +139,11 @@ class MediastinalExcluder:
         # Morphological operations to clean up
         try:
             struct_elem = morphology.ball(3)
-            mediastinal_region = morphology.binary_closing(mediastinal_region, 
-                                                          struct_elem)
+            mediastinal_region = morphology.closing(mediastinal_region, 
+                                                   struct_elem)
         except (ValueError, MemoryError):
-            mediastinal_region = morphology.binary_closing(mediastinal_region,
-                                                          morphology.ball(1))
+            mediastinal_region = morphology.closing(mediastinal_region,
+                                                   morphology.ball(1))
         
         # Exclude regions overlapping with mediastinum
         filtered_mask = filtered_mask & (~mediastinal_region)
