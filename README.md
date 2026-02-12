@@ -432,6 +432,23 @@ python examples/lung_examples/example_lung_usage.py
 - `lung_radiomics.py`: Comprehensive radiomics (metabolic, shape, advanced)
 - `qc_visualization.py`: Quality control visualizations
 - `lung_pipeline.py`: End-to-end pipeline
+- `totalsegmentor_wrapper.py`: TotalSegmentor integration
+- `nnunet_wrapper.py`: nnU-Net deep learning integration
+
+## 📝 Python Scripts Reference
+
+### For Lung-ASP Users:
+
+**Need a list of all scripts?**
+- 📄 **Quick Reference**: See [`LUNG_ASP_SCRIPTS_QUICK.md`](LUNG_ASP_SCRIPTS_QUICK.md) - 1-minute read, all 14 scripts listed
+- 📖 **Comprehensive Guide**: See [`LUNG_ASP_SCRIPTS.md`](LUNG_ASP_SCRIPTS.md) - Complete documentation with API reference
+
+**What you'll find**:
+- All 14 Python scripts (core modules, CLI, helpers, build configs)
+- Line counts and file locations
+- Detailed descriptions and usage examples
+- Complete feature breakdown (32 radiomics features)
+- Classes, methods, and dependencies
 
 ## Clinical Applications
 
