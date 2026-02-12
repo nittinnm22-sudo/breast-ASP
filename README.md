@@ -2,6 +2,19 @@
 
 A comprehensive Python package for FDG PET/CT primary breast tumor segmentation with automated axillary and axillary lymph node exclusion, enabling accurate metabolic and shape radiomics feature extraction.
 
+## 📥 How to Download
+
+**Quick Download**: 
+- 🔗 **Repository**: https://github.com/nittinnm22-sudo/breast-ASP
+- 📦 **Download ZIP**: [Click here](https://github.com/nittinnm22-sudo/breast-ASP/archive/refs/heads/main.zip)
+- 📖 **Detailed Instructions**: See [`HOW_TO_DOWNLOAD.md`](HOW_TO_DOWNLOAD.md) or [`DOWNLOAD_QUICK.md`](DOWNLOAD_QUICK.md)
+
+**With Git**:
+```bash
+git clone https://github.com/nittinnm22-sudo/breast-ASP.git
+cd breast-ASP
+```
+
 ## Features
 
 ### Core Functionality
@@ -26,13 +39,17 @@ A comprehensive Python package for FDG PET/CT primary breast tumor segmentation 
 
 ## Installation
 
+After downloading the repository (see [HOW_TO_DOWNLOAD.md](HOW_TO_DOWNLOAD.md)):
+
 ```bash
-# Clone the repository
-git clone https://github.com/nittinnm22-sudo/breast-ASP.git
+# Navigate to the repository
 cd breast-ASP
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Or install in development mode
+pip install -e .
 ```
 
 ### Dependencies
