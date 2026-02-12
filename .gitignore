@@ -28,3 +28,23 @@ htmlcov/
 *.nii
 *.nii.gz
 *.dcm
+
+# Build artifacts for executable
+venv_build/
+build_exe/
+*.spec.backup
+*.toc
+*.pkg
+*.manifest
+
+# Model files (too large for git)
+models/
+*.pth
+*.pkl
+*.ckpt
+*.h5
+*.onnx
+
+# Data archives
+*.zip
+*.tar.gz
