@@ -217,7 +217,7 @@ This project is open source and available for research and educational purposes.
 
 If you use this package in your research, please cite:
 ```
-Breast-ASP: FDG PET/CT Breast Tumor Segmentation with Axillary Exclusion
+Breast-ASP: FDG PET/CT Tumor Segmentation and Radiomics Analysis
 https://github.com/nittinnm22-sudo/breast-ASP
 ```
 
@@ -227,4 +227,203 @@ For questions or issues, please open an issue on GitHub.
 
 ## Acknowledgments
 
-This package implements methods for breast tumor segmentation and radiomics analysis with a focus on accurate primary tumor characterization through axillary region exclusion.
+This package implements methods for breast and lung tumor segmentation and radiomics analysis with a focus on accurate primary tumor characterization through anatomical region exclusion.
+
+---
+
+# Lung-ASP: FDG PET/CT Lung Tumor Segmentation with Mediastinal Exclusion
+
+## Overview
+
+Comprehensive Python package for FDG PET/CT primary lung tumor segmentation with automated mediastinal exclusion and advanced radiomics feature extraction.
+
+## Features
+
+### Core Functionality
+- **DICOM to NIfTI Conversion**: Automated conversion with geometry preservation using dicom2nifti
+- **Lung Tumor Segmentation**: 
+  - Random walker algorithm for accurate boundary detection
+  - Threshold-based fallback method
+  - CT-based thoracic body mask (HU -500 to +1000)
+  - Morphological post-processing (closing, hole filling ≥500 voxels)
+- **Mediastinal Exclusion**: Intelligent exclusion of central chest structures:
+  - Location-based (central region identification)
+  - CT anatomy-based filtering
+  - Hilar lymph node detection
+  - Multi-method combined approach
+
+### Advanced Radiomics (32 Features)
+
+#### Metabolic Features (14 metrics)
+- SUV statistics: SUVmax, SUVmean, SUVmedian, SUVmin, SUVstd
+- SUV percentiles: p25, p75, p90
+- **SUVpeak**: Average SUV in 1 cm³ hottest sphere
+- **MTV**: Metabolic Tumor Volume at 41% SUVmax threshold
+- **TLG**: Total Lesion Glycolysis
+- Coefficient of Variation (COV)
+
+#### Shape Features (13 metrics)
+- Volume (mm³ and mL)
+- Surface area (mm²) via marching cubes
+- **Sphericity (Ψ)**: π^(1/3) × (6V)^(2/3) / A
+- **Asphericity (ASP)**: 1 - Ψ
+- Compactness measures (2 variants)
+- Maximum 3D diameter
+- Elongation and flatness
+- Solidity
+
+#### Advanced Geometric & Uptake Metrics (6 metrics)
+- **NHOCmax**: Normalized Hotspot-to-Centroid distance
+  - `NHOCmax = d(SUVmax_location, centroid) / R`
+  - R = equivalent-volume sphere radius
+- **NHOPmax**: Normalized Hotspot-to-Perimeter distance
+  - `NHOPmax = d_min(SUVmax_location, boundary) / R`
+- **Dmax**: Intra-lesion maximum 3D diameter (Feret diameter)
+- **DmaxVox**: Voxel-based maximum diameter
+- **gETU**: Generalized Effective Total Uptake
+  - `gETU(a) = (Δv × Σ(u_i^a))^(1/a)`
+  - Flexible power parameter (a=1 gives TLG, a→∞ emphasizes SUVmax)
+
+### Quality Control
+- Orthogonal plane overlays (axial, sagittal, coronal)
+- Comprehensive QC reports with metrics tables
+- High-resolution output (300 DPI)
+- 3D surface rendering support
+
+## Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+### Additional Dependencies
+- nibabel >= 3.2.0
+- dicom2nifti >= 2.4.0
+- trimesh >= 3.20.0
+- matplotlib >= 3.5.0
+- pydicom >= 2.3.0
+
+## Quick Start: Lung Tumor Analysis
+
+### Basic Pipeline Usage
+
+```python
+from lung_asp.lung_pipeline import LungTumorPipeline
+import numpy as np
+
+# Load PET and CT images
+pet_image = ...  # 3D numpy array with SUV values
+ct_image = ...   # 3D CT image with HU values
+spacing = (3.0, 2.5, 2.5)  # voxel spacing in mm (z, y, x)
+
+# Initialize pipeline
+pipeline = LungTumorPipeline(
+    suv_threshold=2.5,           # SUV threshold
+    min_volume_mm3=100.0,        # minimum tumor volume
+    use_random_walker=True,       # use random walker algorithm
+    mtv_threshold_percent=41,     # MTV threshold (% of SUVmax)
+    isotropic_spacing=1.0,        # target spacing for surface analysis
+    getu_a=1.0                    # gETU power parameter
+)
+
+# Process images
+results = pipeline.process(pet_image, ct_image, spacing, generate_qc=True)
+
+# Access all features
+metabolic = results['metabolic_features']
+shape = results['shape_features']
+advanced = results['advanced_features']
+
+print(f"SUVmax: {metabolic['SUVmax']:.2f}")
+print(f"MTV (41%): {metabolic['MTV_ml']:.2f} mL")
+print(f"TLG: {metabolic['TLG']:.2f}")
+print(f"Sphericity: {shape['Sphericity']:.3f}")
+print(f"Asphericity: {shape['Asphericity']:.3f}")
+print(f"NHOCmax: {advanced['NHOCmax']:.4f}")
+print(f"NHOPmax: {advanced['NHOPmax']:.4f}")
+print(f"gETU: {advanced['gETU']:.2f}")
+```
+
+### Process from DICOM
+
+```python
+from lung_asp.lung_pipeline import LungTumorPipeline
+
+pipeline = LungTumorPipeline()
+
+# Convert DICOM to NIfTI and process
+results = pipeline.process_from_dicom(
+    pet_dicom_dir="/path/to/pet/dicoms",
+    ct_dicom_dir="/path/to/ct/dicoms",
+    output_dir="/path/to/output"
+)
+```
+
+### Individual Components
+
+```python
+from lung_asp.lung_segmentation import LungTumorSegmenter
+from lung_asp.lung_exclusion import MediastinalExcluder
+from lung_asp.lung_radiomics import LungMetabolicRadiomics, LungShapeRadiomics, AdvancedMetrics
+
+# Step 1: Segmentation
+segmenter = LungTumorSegmenter(suv_threshold=2.5, use_random_walker=True)
+tumor_mask = segmenter.segment(pet_image, ct_image, spacing)
+
+# Step 2: Mediastinal exclusion
+excluder = MediastinalExcluder()
+filtered_mask = excluder.apply_all_exclusions(tumor_mask, pet_image, ct_image, spacing)
+
+# Step 3: Extract features
+metabolic_extractor = LungMetabolicRadiomics()
+shape_extractor = LungShapeRadiomics(isotropic_spacing=1.0)
+advanced_calculator = AdvancedMetrics()
+
+metabolic_features = metabolic_extractor.extract_features(pet_image, filtered_mask, spacing)
+shape_features = shape_extractor.extract_features(filtered_mask, spacing)
+advanced_features = advanced_calculator.extract_all_advanced_metrics(filtered_mask, pet_image, spacing)
+```
+
+## Examples
+
+### Breast Tumor Analysis
+```bash
+python examples/example_usage.py
+```
+
+### Lung Tumor Analysis
+```bash
+python examples/lung_examples/example_lung_usage.py
+```
+
+## Module Structure
+
+### Breast ASP (`src/breast_asp/`)
+- `segmentation.py`: Breast tumor segmentation
+- `exclusion.py`: Axillary region exclusion
+- `radiomics.py`: Metabolic and shape radiomics
+- `pipeline.py`: End-to-end pipeline
+
+### Lung ASP (`src/lung_asp/`)
+- `dicom_converter.py`: DICOM to NIfTI conversion
+- `lung_segmentation.py`: Lung tumor segmentation with random walker
+- `lung_exclusion.py`: Mediastinal region exclusion
+- `lung_radiomics.py`: Comprehensive radiomics (metabolic, shape, advanced)
+- `qc_visualization.py`: Quality control visualizations
+- `lung_pipeline.py`: End-to-end pipeline
+
+## Clinical Applications
+
+- **Breast Cancer**: Quantitative primary tumor characterization excluding axillary lymph nodes
+- **Lung Cancer**: Peripheral tumor analysis excluding mediastinal and hilar structures
+- **Treatment Response**: Serial measurements with consistent methodology
+- **Research Studies**: Standardized radiomics feature extraction
+- **Clinical Trials**: Reproducible quantitative imaging biomarkers
+
+## Key Advantages
+
+1. **Anatomical Exclusion**: Automated filtering of confounding structures (axillary/mediastinal)
+2. **Advanced Metrics**: Beyond standard radiomics (NHOCmax, NHOPmax, gETU, etc.)
+3. **Geometry Preservation**: Proper handling of DICOM/NIfTI spatial information
+4. **Quality Control**: Automated visualization for validation
+5. **Modular Design**: Use individual components or complete pipelines
