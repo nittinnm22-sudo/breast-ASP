@@ -1,0 +1,199 @@
+=======================================================================
+  FILES TO SAVE FROM REPOSITORY FOR BUILDING EXECUTABLE
+=======================================================================
+
+ESSENTIAL FILES (Required for Building):
+=========================================
+
+1. BUILD SCRIPTS:
+   [X] build_full.sh          (Linux/macOS automated build)
+   [X] build_full.bat         (Windows automated build)
+
+2. CONFIGURATION:
+   [X] lung_asp.spec          (PyInstaller configuration)
+   [X] lung_asp_cli.py        (Main CLI entry point)
+   [X] setup.py               (Package setup)
+   [X] requirements_exe.txt   (All dependencies list)
+
+3. SOURCE CODE:
+   [X] src/                   (Entire directory with all modules)
+       ├── breast_asp/        (Breast analysis modules)
+       └── lung_asp/          (Lung analysis modules)
+           ├── __init__.py
+           ├── dicom_converter.py
+           ├── lung_segmentation.py
+           ├── lung_exclusion.py
+           ├── lung_radiomics.py
+           ├── lung_pipeline.py
+           ├── qc_visualization.py
+           ├── totalsegmentor_wrapper.py
+           └── nnunet_wrapper.py
+
+
+DOCUMENTATION FILES (Recommended):
+==================================
+
+4. GETTING STARTED:
+   [X] START_HERE.md          ⭐ START WITH THIS! Complete instructions
+   
+5. BUILD GUIDES:
+   [X] QUICK_BUILD_GUIDE.md   Quick command reference
+   [X] BUILD_LOCAL.md         Detailed build guide with troubleshooting
+   [X] BUILD_CHECKLIST.md     Step-by-step verification checklist
+
+6. USER DOCUMENTATION:
+   [X] USER_GUIDE.md          End-user manual
+   [X] README.md              Project overview
+
+
+OPTIONAL FILES (Nice to Have):
+===============================
+
+7. EXAMPLES:
+   [X] examples/              Example scripts and usage
+       ├── breast_examples/
+       └── lung_examples/
+
+8. TESTS:
+   [X] tests/                 Unit tests
+       ├── test_basic.py
+       └── test_lung.py
+
+9. ADDITIONAL DOCS:
+   [X] BUILD_EXECUTABLE.md    Original build documentation
+   [X] EXECUTABLE_IMPLEMENTATION.md
+   [X] LUNG_ASP_IMPLEMENTATION.md
+
+
+=======================================================================
+  QUICK BUILD COMMANDS
+=======================================================================
+
+Linux/macOS:
+------------
+chmod +x build_full.sh
+./build_full.sh
+
+Windows:
+--------
+build_full.bat
+
+Manual Build:
+-------------
+pip install -e .
+pyinstaller lung_asp.spec --clean --noconfirm
+./dist/lung_asp/lung_asp --help
+
+
+=======================================================================
+  FILE STRUCTURE AFTER DOWNLOADING
+=======================================================================
+
+breast-ASP/
+├── build_full.sh               ← Run this (Linux/macOS)
+├── build_full.bat              ← Run this (Windows)
+├── lung_asp.spec               ← PyInstaller config
+├── lung_asp_cli.py             ← Main CLI
+├── setup.py                    ← Package setup
+├── requirements_exe.txt        ← Dependencies
+├── START_HERE.md               ← Read this first!
+├── QUICK_BUILD_GUIDE.md        ← Quick reference
+├── BUILD_LOCAL.md              ← Detailed guide
+├── BUILD_CHECKLIST.md          ← Verification
+├── USER_GUIDE.md               ← For end users
+├── README.md                   ← Overview
+└── src/                        ← Source code
+    ├── breast_asp/
+    └── lung_asp/
+
+
+=======================================================================
+  DOWNLOAD METHODS
+=======================================================================
+
+Method 1: Clone the entire repository
+--------------------------------------
+git clone https://github.com/nittinnm22-sudo/breast-ASP.git
+cd breast-ASP
+
+Method 2: Download as ZIP
+-------------------------
+1. Go to: https://github.com/nittinnm22-sudo/breast-ASP
+2. Click "Code" → "Download ZIP"
+3. Extract the ZIP file
+4. Navigate to the extracted folder
+
+Method 3: Download individual files
+------------------------------------
+From GitHub, click on each file and "Download Raw File"
+Maintain the directory structure as shown above
+
+
+=======================================================================
+  VERIFICATION
+=======================================================================
+
+After downloading, verify you have these key files:
+
+Essential:
+----------
+[ ] build_full.sh or build_full.bat exists
+[ ] lung_asp.spec exists
+[ ] lung_asp_cli.py exists
+[ ] src/lung_asp/ directory exists with all .py files
+[ ] setup.py exists
+
+Documentation:
+--------------
+[ ] START_HERE.md exists
+[ ] QUICK_BUILD_GUIDE.md exists
+[ ] BUILD_LOCAL.md exists
+
+
+=======================================================================
+  WHAT TO DO AFTER SAVING
+=======================================================================
+
+1. Open START_HERE.md and read it
+2. Verify you have all dependencies installed:
+   - PyTorch
+   - TotalSegmentor
+   - nnU-Net (nnunetv2)
+   - PyInstaller
+3. Run the build script:
+   - Linux/macOS: ./build_full.sh
+   - Windows: build_full.bat
+4. Wait 10-15 minutes
+5. Find your executable in dist/lung_asp/
+6. Test it: ./dist/lung_asp/lung_asp --help
+7. Package it for distribution
+
+
+=======================================================================
+  SUPPORT
+=======================================================================
+
+If you have issues:
+1. Check START_HERE.md
+2. Check BUILD_LOCAL.md (troubleshooting section)
+3. Check BUILD_CHECKLIST.md (verify each step)
+4. Look at build/lung_asp/warn-lung_asp.txt for warnings
+
+
+=======================================================================
+  PACKAGE SIZE
+=======================================================================
+
+After building, expect:
+- dist/lung_asp/ directory: 2-4 GB
+- Includes all dependencies
+- Standalone executable (no Python needed to run)
+
+
+=======================================================================
+
+Last Updated: 2026-02-12
+Version: 1.0.0
+Repository: https://github.com/nittinnm22-sudo/breast-ASP
+
+=======================================================================
