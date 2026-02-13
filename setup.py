@@ -1,18 +1,43 @@
 """Setup configuration for breast-ASP package."""
 
+import os
 from setuptools import setup, find_packages
 
-with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
+# Read long description
+long_description = ""
+try:
+    readme_path = os.path.join(os.path.dirname(__file__), "README.md")
+    with open(readme_path, "r", encoding="utf-8") as fh:
+        long_description = fh.read()
+except Exception:
+    long_description = "FDG PET/CT Breast and Lung Tumor Segmentation"
 
-with open("requirements.txt", "r", encoding="utf-8") as fh:
-    requirements = [line.strip() for line in fh if line.strip() and not line.startswith("#")]
+# Read requirements
+requirements = []
+try:
+    req_path = os.path.join(os.path.dirname(__file__), "requirements.txt")
+    with open(req_path, "r", encoding="utf-8") as fh:
+        requirements = [line.strip() for line in fh if line.strip() and not line.startswith("#")]
+except Exception:
+    # Fallback requirements if file can't be read
+    requirements = [
+        "numpy>=1.21.0",
+        "scipy>=1.7.0",
+        "scikit-image>=0.18.0",
+        "SimpleITK>=2.1.0",
+        "pandas>=1.3.0",
+        "nibabel>=3.2.0",
+        "dicom2nifti>=2.4.0",
+        "trimesh>=3.20.0",
+        "matplotlib>=3.5.0",
+        "pydicom>=2.3.0",
+    ]
 
 setup(
     name="breast-asp",
     version="1.0.0",
     author="Breast ASP Project",
-    description="FDG PET/CT Breast Tumor Segmentation with Axillary Exclusion",
+    description="FDG PET/CT Breast and Lung Tumor Segmentation with Radiomics",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/nittinnm22-sudo/breast-ASP",
