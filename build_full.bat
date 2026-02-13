@@ -11,9 +11,36 @@ echo    With TotalSegmentor ^& nnU-Net
 echo ==========================================
 echo.
 
-REM Step 1: Check Python version
-echo Step 1: Checking Python version...
-python --version
+REM Step 1: Check Python version and environment
+echo Step 1: Checking Python version and virtual environment...
+
+REM Check if we're in a virtual environment
+if defined VIRTUAL_ENV (
+    echo ✓ Virtual environment detected: %VIRTUAL_ENV%
+    set PYTHON_CMD=%VIRTUAL_ENV%\Scripts\python.exe
+    set PIP_CMD=%VIRTUAL_ENV%\Scripts\pip.exe
+    set PYINSTALLER_CMD=%VIRTUAL_ENV%\Scripts\pyinstaller.exe
+) else (
+    echo ⚠ WARNING: No virtual environment detected!
+    echo.
+    echo It's recommended to use a virtual environment to avoid conflicts.
+    echo If you have a virtual environment, activate it first:
+    echo   lung_env\Scripts\activate
+    echo.
+    set /p CONTINUE="Continue with system Python? (y/n): "
+    if /i not "%CONTINUE%"=="y" (
+        echo.
+        echo Please activate your virtual environment and try again.
+        pause
+        exit /b 1
+    )
+    set PYTHON_CMD=python
+    set PIP_CMD=pip
+    set PYINSTALLER_CMD=pyinstaller
+)
+
+echo Using Python from: %PYTHON_CMD%
+%PYTHON_CMD% --version
 if errorlevel 1 (
     echo ERROR: Python not found! Please install Python 3.8-3.11
     pause
@@ -23,19 +50,38 @@ echo.
 
 REM Step 2: Check dependencies
 echo Step 2: Checking installed dependencies...
-python -c "import torch; print('✓ PyTorch:', torch.__version__)" 2>nul || echo ✗ PyTorch not found
-python -c "import totalsegmentor; print('✓ TotalSegmentor: OK')" 2>nul || echo ✗ TotalSegmentor not found
-python -c "import nnunetv2; print('✓ nnU-Net: OK')" 2>nul || echo ✗ nnU-Net not found
-python -c "import numpy; print('✓ NumPy: OK')" 2>nul || echo ✗ NumPy not found
-python -c "import PyInstaller; print('✓ PyInstaller: OK')" 2>nul || echo ✗ PyInstaller not found
+%PYTHON_CMD% -c "import torch; print('✓ PyTorch:', torch.__version__)" 2>nul || echo ✗ PyTorch not found
+%PYTHON_CMD% -c "import totalsegmentor; print('✓ TotalSegmentor: OK')" 2>nul || echo ✗ TotalSegmentor not found
+%PYTHON_CMD% -c "import nnunetv2; print('✓ nnU-Net: OK')" 2>nul || echo ✗ nnU-Net not found
+%PYTHON_CMD% -c "import numpy; print('✓ NumPy: OK')" 2>nul || echo ✗ NumPy not found
+%PYTHON_CMD% -c "import PyInstaller; print('✓ PyInstaller: OK')" 2>nul || echo ✗ PyInstaller not found
 echo.
 
 pause
 echo.
 
-REM Step 3: Install lung_asp package
-echo Step 3: Installing lung_asp package...
-pip install -e .
+REM Step 3: Check for lung_asp.spec file
+echo Step 3: Checking for lung_asp.spec file...
+if not exist lung_asp.spec (
+    echo ERROR: lung_asp.spec file not found!
+    echo.
+    echo This file is required for building the executable.
+    echo.
+    echo Please ensure you have downloaded all files from the repository.
+    echo The file should be in the root directory: %CD%
+    echo.
+    echo You can download it from:
+    echo   https://github.com/nittinnm22-sudo/breast-ASP/blob/main/lung_asp.spec
+    echo.
+    pause
+    exit /b 1
+)
+echo ✓ lung_asp.spec found
+echo.
+
+REM Step 4: Install lung_asp package
+echo Step 4: Installing lung_asp package...
+%PIP_CMD% install -e .
 if errorlevel 1 (
     echo ERROR: Failed to install package
     pause
@@ -44,9 +90,9 @@ if errorlevel 1 (
 echo ✓ Package installed
 echo.
 
-REM Step 4: Test CLI
-echo Step 4: Testing CLI functionality...
-python lung_asp_cli.py --help >nul 2>&1
+REM Step 5: Test CLI
+echo Step 5: Testing CLI functionality...
+%PYTHON_CMD% lung_asp_cli.py --help >nul 2>&1
 if errorlevel 1 (
     echo ERROR: CLI test failed
     pause
@@ -55,19 +101,19 @@ if errorlevel 1 (
 echo ✓ CLI test passed
 echo.
 
-REM Step 5: Clean previous builds
-echo Step 5: Cleaning previous builds...
+REM Step 6: Clean previous builds
+echo Step 6: Cleaning previous builds...
 if exist build rmdir /s /q build
 if exist dist rmdir /s /q dist
 echo ✓ Cleaned
 echo.
 
-REM Step 6: Build with PyInstaller
-echo Step 6: Building executable with PyInstaller...
+REM Step 7: Build with PyInstaller
+echo Step 7: Building executable with PyInstaller...
 echo This may take 5-15 minutes...
 echo.
 
-pyinstaller lung_asp.spec --clean --noconfirm
+%PYINSTALLER_CMD% lung_asp.spec --clean --noconfirm
 
 if errorlevel 1 (
     echo.
@@ -81,8 +127,8 @@ echo.
 echo ✓ Build completed successfully!
 echo.
 
-REM Step 7: Verify build
-echo Step 7: Verifying build...
+REM Step 8: Verify build
+echo Step 8: Verifying build...
 
 if exist dist\lung_asp\lung_asp.exe (
     echo ✓ Executable found
@@ -103,7 +149,7 @@ if exist dist\lung_asp\lung_asp.exe (
 )
 echo.
 
-REM Step 8: Summary
+REM Step 9: Summary
 echo ==========================================
 echo        BUILD SUCCESSFUL!
 echo ==========================================
