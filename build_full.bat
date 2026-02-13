@@ -21,19 +21,34 @@ if defined VIRTUAL_ENV (
     set PIP_CMD=%VIRTUAL_ENV%\Scripts\pip.exe
     set PYINSTALLER_CMD=%VIRTUAL_ENV%\Scripts\pyinstaller.exe
 ) else (
-    echo ⚠ WARNING: No virtual environment detected!
+    echo ╔════════════════════════════════════════════════════════╗
+    echo ║  WARNING: No virtual environment detected!            ║
+    echo ╚════════════════════════════════════════════════════════╝
     echo.
-    echo It's recommended to use a virtual environment to avoid conflicts.
-    echo If you have a virtual environment, activate it first:
+    echo FIRST TIME SETUP?
+    echo   See SETUP_FIRST_TIME.md for complete setup instructions.
+    echo.
+    echo QUICK SETUP:
+    echo   1. python -m venv lung_env
+    echo   2. lung_env\Scripts\activate
+    echo   3. pip install -e .
+    echo   4. Run this script again
+    echo.
+    echo If you already have a virtual environment:
     echo   lung_env\Scripts\activate
     echo.
-    set /p CONTINUE="Continue with system Python? (y/n): "
+    set /p CONTINUE="Continue anyway? (NOT recommended) (y/n): "
     if /i not "%CONTINUE%"=="y" (
         echo.
-        echo Please activate your virtual environment and try again.
+        echo Setup your virtual environment first, then try again.
+        echo See SETUP_FIRST_TIME.md for detailed instructions.
         pause
         exit /b 1
     )
+    echo.
+    echo WARNING: Continuing without virtual environment...
+    echo This may cause conflicts with your system Python.
+    echo.
     set PYTHON_CMD=python
     set PIP_CMD=pip
     set PYINSTALLER_CMD=pyinstaller
