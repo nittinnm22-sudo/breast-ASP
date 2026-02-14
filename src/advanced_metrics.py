@@ -152,7 +152,7 @@ def compute_suv_peak(pet_data, tumor_mask, affine):
         return float(np.max(pet_data[tumor_mask]))
 
 
-def compute_dmax(tumor_mask, affine):
+def compute_dmax(tumor_mask, affine, random_seed=42):
     """
     Compute maximum 3D Euclidean diameter between any two surface voxels.
     
@@ -162,6 +162,8 @@ def compute_dmax(tumor_mask, affine):
         Binary tumor mask
     affine : ndarray
         Affine transformation matrix
+    random_seed : int, optional
+        Random seed for reproducible sampling (default: 42)
         
     Returns
     -------
@@ -183,8 +185,9 @@ def compute_dmax(tumor_mask, affine):
     
     # Compute pairwise distances (optimized for large sets)
     if len(boundary_coords_mm) > 1000:
-        # Sample subset for efficiency
-        idx = np.random.choice(len(boundary_coords_mm), 1000, replace=False)
+        # Sample subset for efficiency with fixed seed for reproducibility
+        rng = np.random.RandomState(random_seed)
+        idx = rng.choice(len(boundary_coords_mm), 1000, replace=False)
         boundary_coords_mm = boundary_coords_mm[idx]
     
     distances = cdist(boundary_coords_mm, boundary_coords_mm, metric='euclidean')

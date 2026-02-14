@@ -126,9 +126,13 @@ For each case, the pipeline generates:
 
 ## Citation
 
-If you use this software in your research, please cite:
+If you use this software in your research, please cite appropriately.
 
-*[Citation to be added]*
+*Note: This is research software. Formal citation information will be added upon publication.*
+
+## Repository Note
+
+This repository is named `breast-ASP` but contains the Lung ASP (lung tumor segmentation) implementation. The package name is `lung-asp`.
 
 ## License
 

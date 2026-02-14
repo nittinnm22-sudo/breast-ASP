@@ -23,12 +23,12 @@ from advanced_metrics import compute_all_metrics
 logger = logging.getLogger(__name__)
 
 
-def create_thoracic_body_mask(ct_nifti_path, output_path=None):
+def create_thoracic_body_mask(ct_nifti_path, output_path=None, closing_radius=20):
     """
     Create CT-based thoracic body mask using HU thresholding.
     
     Threshold: -500 to +1000 HU
-    Morphological closing: radius 20 voxels
+    Morphological closing: configurable radius (default 20 voxels)
     
     Parameters
     ----------
@@ -36,6 +36,8 @@ def create_thoracic_body_mask(ct_nifti_path, output_path=None):
         Path to CT NIfTI file
     output_path : Path, optional
         Path to save body mask
+    closing_radius : int, optional
+        Radius for morphological closing (default: 20 voxels)
         
     Returns
     -------
@@ -51,15 +53,15 @@ def create_thoracic_body_mask(ct_nifti_path, output_path=None):
     # Apply HU threshold: -500 to +1000
     body_mask = (ct_data >= -500) & (ct_data <= 1000)
     
-    # Morphological closing with radius 20 voxels
+    # Morphological closing with configurable radius
     # Use scikit-image ball structure for efficiency
     try:
         from skimage.morphology import ball
-        structure = ball(20)
+        structure = ball(closing_radius)
     except ImportError:
         # Fallback to iterative dilation if skimage not available
         structure = ndimage.generate_binary_structure(3, 1)
-        structure = ndimage.iterate_structure(structure, 20)
+        structure = ndimage.iterate_structure(structure, closing_radius)
     
     body_mask = ndimage.binary_closing(body_mask, structure=structure)
     
