@@ -1,10 +1,11 @@
 """
 Safe wrapper for TotalSegmentator execution.
-Ensures consistent Path object returns and error handling.
+Ensures consistent Path object returns, error handling, and GPU support.
 """
 import subprocess
 from pathlib import Path
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -14,10 +15,11 @@ def run_totalsegmentator(
     output_dir: Path,
     fast: bool = False,
     force_split: bool = False,
-    quiet: bool = False
+    quiet: bool = False,
+    use_gpu: bool = True
 ) -> Path:
     """
-    Run TotalSegmentator on CT NIfTI file.
+    Run TotalSegmentator on CT NIfTI file with GPU support.
     
     Parameters
     ----------
@@ -31,6 +33,8 @@ def run_totalsegmentator(
         Force split processing for large images
     quiet : bool, optional
         Suppress output
+    use_gpu : bool, optional
+        Use GPU if available (default: True)
         
     Returns
     -------
@@ -51,6 +55,21 @@ def run_totalsegmentator(
         "-o", str(output_dir),
         "--ml"  # Use multilabel output
     ]
+    
+    # GPU configuration
+    if use_gpu:
+        # Check if GPU is available via environment variable
+        if os.environ.get('TOTALSEG_USE_GPU', '1') == '1':
+            cmd.append("--device")
+            cmd.append("gpu")
+            logger.info("TotalSegmentator will use GPU")
+        else:
+            cmd.append("--device")
+            cmd.append("cpu")
+            logger.info("TotalSegmentator will use CPU")
+    else:
+        cmd.append("--device")
+        cmd.append("cpu")
     
     if fast:
         cmd.append("--fast")

@@ -10,6 +10,9 @@ pydicom>=2.3.0
 SimpleITK>=2.2.0
 totalsegmentator>=2.0.0
 
+# DICOM to NIfTI conversion
+dicom2nifti>=2.4.0
+
 # nnU-Net for advanced segmentation
 nnunetv2>=2.2
 
@@ -18,3 +21,7 @@ pyinstaller>=6.0.0
 
 # Additional dependencies for GUI
 tk>=0.1.0  # Usually included with Python, but listed for completeness
+
+# PyTorch with CUDA support (for GPU acceleration)
+# Note: Install separately with: pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+
