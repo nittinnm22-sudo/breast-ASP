@@ -10,7 +10,7 @@ setup(
     description="FDG PET/CT Lung Tumor Segmentation with Mediastinal Exclusion",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/nittinnm22-sudo/breast-ASP",
+    url="https://github.com/nittinnm22-sudo/lung-ASP",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     classifiers=[

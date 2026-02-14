@@ -55,8 +55,9 @@ def create_thoracic_body_mask(ct_nifti_path, output_path=None):
     # Use binary_closing with ball structure element
     structure = ndimage.generate_binary_structure(3, 1)
     # Dilate structure to approximate ball of radius 20
+    dilate_struct = ndimage.generate_binary_structure(3, 1)
     for _ in range(20):
-        structure = ndimage.binary_dilation(structure, structure=ndimage.generate_binary_structure(3, 1))
+        structure = ndimage.binary_dilation(structure, structure=dilate_struct)
     
     body_mask = ndimage.binary_closing(body_mask, structure=structure)
     
