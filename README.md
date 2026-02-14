@@ -2,6 +2,21 @@
 
 FDG PET/CT Lung Tumor Segmentation with Mediastinal Exclusion
 
+## 🚀 Quick Start
+
+**Want to build a standalone executable?** 
+👉 **[COMPLETE DOWNLOAD & BUILD GUIDE](COMPLETE_DOWNLOAD_BUILD_GUIDE.md)** - Start here!
+
+**Quick visual overview?**
+👉 **[QUICK VISUAL GUIDE](QUICK_VISUAL_GUIDE.md)** - Diagrams and flowcharts
+
+**Already downloaded? Verify your files:**
+```bash
+python verify_download.py
+```
+
+---
+
 ## Overview
 
 Lung ASP is a comprehensive pipeline for automated primary lung tumor segmentation and radiomics extraction from FDG PET/CT imaging. The pipeline implements:
@@ -27,19 +42,67 @@ Lung ASP is a comprehensive pipeline for automated primary lung tumor segmentati
 - **Shape Metrics**: Sphericity (Ψ), Asphericity (ASP)
 - **Advanced Uptake**: gETU for α = 0.25, 0.5, 1.0, 2.0, 4.0
 
+### DICOM Support & GPU Acceleration
+- **Direct DICOM input** - No pre-conversion needed
+- **Automatic NIfTI conversion** using dicom2nifti
+- **Geometry preservation** - ImageOrientation, PixelSpacing maintained
+- **GPU acceleration** - NVIDIA GPU support for faster processing (RTX 4050, 6GB VRAM tested)
+- See [DICOM_GPU_GUIDE.md](DICOM_GPU_GUIDE.md) for details
+
 ### Quality Control
 - 3-plane orthogonal overlays (axial, coronal, sagittal)
 - Tumor contours on PET and CT
 - Constraint mask visualization
 - High-resolution 300 DPI output
 
-## Installation
+## 📦 Building Standalone Executable (Recommended)
+
+### Want a standalone .exe/.app with ALL dependencies built-in?
+
+**📖 Complete Guide:** [COMPLETE_DOWNLOAD_BUILD_GUIDE.md](COMPLETE_DOWNLOAD_BUILD_GUIDE.md) ⭐ **Start Here!**
+
+**🎨 Visual Guide:** [QUICK_VISUAL_GUIDE.md](QUICK_VISUAL_GUIDE.md)
+
+**Quick steps:**
+1. Download this repository: `git clone https://github.com/nittinnm22-sudo/breast-ASP.git`
+2. Verify files: `python verify_download.py`
+3. Build: `build_executable.bat` (Windows) or `./build_executable.sh` (Mac/Linux)
+4. Wait 20-30 minutes
+5. Get standalone app in `dist/LungASP/`
+
+**What's included in the executable:**
+- ✅ Python runtime (target computers don't need Python)
+- ✅ TotalSegmentator (complete)
+- ✅ nnU-Net v2 (nnunetv2)
+- ✅ All Python dependencies
+- ✅ DICOM to NIfTI conversion
+- ✅ GPU support (CUDA libraries)
+- ✅ GUI interface
+
+**Distribution:**
+- Copy entire `dist/LungASP/` folder to any computer
+- No installation required - just run!
+- Works on computers without Python
+
+---
+
+## Installation (For Development Only)
 
 ### Requirements
 - Python ≥ 3.10
-- Dependencies: see `requirements.txt`
+- Dependencies: see `requirements-full.txt`
 
 ### Quick Install
+
+```bash
+# Install all dependencies including dicom2nifti, TotalSegmentator, nnU-Net
+pip install -r requirements-full.txt
+
+# For GPU support (NVIDIA with CUDA 12.x)
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+```
+
+Or use automated scripts:
 
 ```bash
 # Linux/Mac
