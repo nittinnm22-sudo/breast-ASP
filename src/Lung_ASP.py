@@ -52,12 +52,14 @@ def create_thoracic_body_mask(ct_nifti_path, output_path=None):
     body_mask = (ct_data >= -500) & (ct_data <= 1000)
     
     # Morphological closing with radius 20 voxels
-    # Use binary_closing with ball structure element
-    structure = ndimage.generate_binary_structure(3, 1)
-    # Dilate structure to approximate ball of radius 20
-    dilate_struct = ndimage.generate_binary_structure(3, 1)
-    for _ in range(20):
-        structure = ndimage.binary_dilation(structure, structure=dilate_struct)
+    # Use scikit-image ball structure for efficiency
+    try:
+        from skimage.morphology import ball
+        structure = ball(20)
+    except ImportError:
+        # Fallback to iterative dilation if skimage not available
+        structure = ndimage.generate_binary_structure(3, 1)
+        structure = ndimage.iterate_structure(structure, 20)
     
     body_mask = ndimage.binary_closing(body_mask, structure=structure)
     

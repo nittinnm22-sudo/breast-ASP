@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -11,8 +11,16 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/nittinnm22-sudo/lung-ASP",
-    packages=find_packages(where="src"),
     package_dir={"": "src"},
+    py_modules=[
+        "Lung_ASP",
+        "advanced_metrics",
+        "Mask_QC",
+        "totalseg_safe",
+        "lung_asp_cli",
+        "Lung_ASP_GUI",
+        "download_models",
+    ],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Healthcare Industry",

@@ -329,9 +329,9 @@ def compute_getu(tumor_suvs, voxel_volume_ml):
                 getu = 0.0
         
         # Format key as gETU_a025, gETU_a050, etc.
-        # Use integer conversion for consistent formatting
-        alpha_int = int(alpha * 100)
-        key = f'gETU_a{alpha_int:03d}'
+        # Scale alpha to integer (e.g., 0.25 -> 25) and format with 3 digits
+        alpha_scaled = int(alpha * 100)
+        key = f'gETU_a{alpha_scaled:03d}'
         getu_metrics[key] = float(getu)
     
     return getu_metrics

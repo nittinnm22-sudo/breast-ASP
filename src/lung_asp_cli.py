@@ -85,7 +85,7 @@ Example:
     # Validate inputs
     pet_path = Path(args.pet)
     ct_path = Path(args.ct)
-    output_dir = Path(args.output)
+    out_dir = Path(args.output)
     
     if not pet_path.exists():
         logger.error(f"PET file not found: {pet_path}")
@@ -103,12 +103,12 @@ Example:
         metrics = process_case(
             pet_nifti_path=pet_path,
             ct_nifti_path=ct_path,
-            out_dir=output_dir,
+            out_dir=out_dir,
             case_id=args.case
         )
         
         logger.info("Segmentation complete!")
-        logger.info(f"Results saved to: {output_dir}")
+        logger.info(f"Results saved to: {out_dir}")
         
         # Print metrics summary
         print("\n" + "="*60)
@@ -130,10 +130,10 @@ Example:
         if args.generate_qc:
             logger.info("Generating QC overlays...")
             
-            pet_resampled_path = output_dir / f"{args.case}_pet_resampled.nii.gz"
-            tumor_mask_path = output_dir / f"{args.case}_tumor_mask.nii.gz"
-            body_mask_path = output_dir / f"{args.case}_body_mask.nii.gz"
-            qc_output_path = output_dir / f"{args.case}_qc_overlay.png"
+            pet_resampled_path = out_dir / f"{args.case}_pet_resampled.nii.gz"
+            tumor_mask_path = out_dir / f"{args.case}_tumor_mask.nii.gz"
+            body_mask_path = out_dir / f"{args.case}_body_mask.nii.gz"
+            qc_output_path = out_dir / f"{args.case}_qc_overlay.png"
             
             generate_qc_overlays(
                 pet_nifti_path=pet_resampled_path,
